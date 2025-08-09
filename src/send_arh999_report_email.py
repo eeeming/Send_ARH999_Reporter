@@ -3,6 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 import os
+import logging
 from dotenv import load_dotenv
 
 # 加载环境变量
@@ -19,7 +20,7 @@ SMTP_PORT = int(os.getenv('SMTP_PORT', '465'))
 
 # 简单检查是否所有必要变量都已设置
 if not all([SENDER_EMAIL, SENDER_PASSWORD, RECEIVER_EMAIL]):
-    print("错误：邮件发送所需的环境变量未完全设置。请检查 SENDER_EMAIL, SENDER_PASSWORD, RECEIVER_EMAIL。")
+    logging.error("错误：邮件发送所需的环境变量未完全设置。请检查 SENDER_EMAIL, SENDER_PASSWORD, RECEIVER_EMAIL。")
     # 可以选择退出程序或采取其他错误处理
     exit(1) # 退出程序
 
@@ -34,7 +35,7 @@ def send_arh999_report_email():
         with open("arh999_report_table.html", 'r', encoding='utf-8') as f:
             html_content = f.read()
     except FileNotFoundError:
-        print("错误：未找到 arh999_report_table.html 文件。请确保已先生成。")
+        logging.error("错误：未找到 arh999_report_table.html 文件。请确保已先生成。")
         return
     
     # 2. 读取图片文件（二进制模式）
@@ -42,7 +43,7 @@ def send_arh999_report_email():
         with open("arh999_report_chart.png", 'rb') as fp:
             img_data = fp.read()
     except FileNotFoundError:
-        print("错误：未找到 arh999_report_chart.png 文件。请确保已先生成。")
+        logging.error("错误：未找到 arh999_report_chart.png 文件。请确保已先生成。")
         return
 
     # 3. 创建 HTML 部分并添加到邮件中
@@ -89,13 +90,13 @@ def send_arh999_report_email():
         server.send_message(msg) # 发送邮件
         server.quit() # 关闭连接
 
-        print("邮件发送成功！请检查收件箱。")
+        logging.info("邮件发送成功！请检查收件箱。")
     except smtplib.SMTPAuthenticationError:
-        print("邮件发送失败：SMTP 认证错误。请检查邮箱账号和密码/授权码，并确认是否开启了相关服务（如Gmail的应用专用密码）。")
+        logging.error("邮件发送失败：SMTP 认证错误。请检查邮箱账号和密码/授权码，并确认是否开启了相关服务（如Gmail的应用专用密码）。")
     except smtplib.SMTPConnectError:
-        print("邮件发送失败：SMTP 连接错误。请检查服务器地址和端口，或网络连接。")
+        logging.error("邮件发送失败：SMTP 连接错误。请检查服务器地址和端口，或网络连接。")
     except Exception as e:
-        print(f"邮件发送过程中发生未知错误: {e}")
+        logging.exception("邮件发送过程中发生未知错误")
 
 if __name__ == "__main__":
     send_arh999_report_email()

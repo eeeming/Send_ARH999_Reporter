@@ -1,5 +1,7 @@
 import requests
 import datetime
+import logging
+
 
 def fetch_arh999_data():
     """
@@ -56,20 +58,16 @@ def fetch_arh999_data():
         return cleaned_data
         
     except requests.exceptions.RequestException as e:
-        print(f"请求API失败: {e}")
+        logging.error(f"请求API失败: {e}")
         return None
     except ValueError as e:
-        print(f"解析JSON失败或数据格式不正确: {e}")
+        logging.error(f"解析JSON失败或数据格式不正确: {e}")
         return None
 
 if __name__ == "__main__":
     arh999_data = fetch_arh999_data()
     if arh999_data:
         # 打印最新几条数据看看效果
-        print("最新几条 ARH999 数据：")
+        logging.info("最新几条 ARH999 数据：")
         for entry in arh999_data[-5:]: # 打印最后5条
-            print(f"日期: {entry['date']}, "
-                  f"ARH999 指数: {entry['arh999']:.4f}, "
-                  f"BTC全球指数: {entry['btc_global_index']:.2f}, "
-                  f"指数增长估值: {entry['growth_estimation']:.2f}, "
-                  f"200日定投成本: {entry['daily_investment_cost_200d']:.2f}")
+            logging.info(f"日期: {entry['date']}, ARH999 指数: {entry['arh999']:.4f}, BTC全球指数: {entry['btc_global_index']:.2f}, 指数增长估值: {entry['growth_estimation']:.2f}, 200日定投成本: {entry['daily_investment_cost_200d']:.2f}")
