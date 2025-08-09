@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import matplotlib.dates as mdates # 用于更好地处理日期轴
 from datetime import timedelta
+import logging
 
 # 确保中文字符能够正常显示
 plt.rcParams['font.sans-serif'] = ['WenQuanYi Zen Hei'] # 使用你通过 fc-list 找到的字体名称
@@ -77,7 +78,7 @@ def generate_arh999_report_chart(data, output_path="arh999_report_chart.png"):
     # 8. 保存图表
     plt.savefig(output_path, dpi=300, bbox_inches='tight') # dpi提高分辨率，bbox_inches='tight'确保所有元素都被保存
     plt.close(fig) # 关闭图表，释放内存
-    print(f"ARH999 报告图表已保存到: {output_path}")
+    logging.info(f"ARH999 报告图表已保存到: {output_path}")
 
     # 集成到 main 模块 (如果你选择这样做的话)
 if __name__ == "__main__":
@@ -85,9 +86,9 @@ if __name__ == "__main__":
     
     arh999_full_data = fetch_arh999_data()
     if arh999_full_data:
-        print("已获取所有 ARH999 历史数据，开始生成图表...")
+        logging.info("已获取所有 ARH999 历史数据，开始生成图表...")
         # 调用新的图表生成函数
         generate_arh999_report_chart(arh999_full_data, output_path="arh999_report_chart.png")
-        print("图表生成完成。")
+        logging.info("图表生成完成。")
     else:
-        print("未能获取 ARH999 数据，跳过图表生成。")
+        logging.warning("未能获取 ARH999 数据，跳过图表生成。")

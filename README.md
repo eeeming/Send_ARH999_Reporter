@@ -1,7 +1,8 @@
 # 定时报告ARH999指数
->这是一个定时向邮箱里发送ARH999指数的项目。
+
+这是一个定时向邮箱里发送ARH999指数的项目。
 邮件中附有近一年BTC指数和ARH999指数的折线图，以及近一月ARH999指数、BTC指数、指数增长估值、200日定投成本的表格。
->
+
 `fetch_arh999.fetch_arh999_data()`
 一个获取ARH999指数的函数
 
@@ -15,3 +16,19 @@
 一个负责发送email的函数
 
 **项目中的ARH999指数来自`https://www.feixiaohao.com/data/ahrdata.html`**
+
+
+# 使用方法
+
+填写环境变量
+
+```bash
+cp .env.example .env
+```
+
+使用 docker 运行
+
+```bash
+docker build -t ahr999 .
+docker run --env-file .env --rm ahr999
+```

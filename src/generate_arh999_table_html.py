@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import timedelta # 确保导入 timedelta
 from fetch_arh999 import fetch_arh999_data
+import logging
 # 假设 data 是你从 fetch_arh999_data() 获取到的数据
 # data = fetch_arh999_data() # 你在实际运行中需要调用这个函数来获取数据
 
@@ -11,7 +12,7 @@ def generate_arh999_table_html(data, output_path="arh999_report_table.html"):
     :param output_path: HTML文件保存路径和文件名
     """
     if data is None:
-        print("没有数据可以生成表格。")
+        logging.warning("没有数据可以生成表格。")
         return
 
     df = pd.DataFrame(data)
@@ -66,7 +67,7 @@ def generate_arh999_table_html(data, output_path="arh999_report_table.html"):
 
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html_string)
-    print(f"ARH999 报告表格已保存到: {output_path}")
+    logging.info(f"ARH999 报告表格已保存到: {output_path}")
 
 # 示例调用 (假设你已经有了 data)
 # generate_arh999_table_html(your_fetched_data_variable)
